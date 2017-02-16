@@ -12,6 +12,56 @@
     <div id="loader" style="margin-top: 20%">
         <img src="images/reload.gif" width="100px" height="100px" alt="loader" />
     </div>
+    <script>
+
+        $(document).ready(function () {
+            $('#forgotPswd').click(function () {
+                var _username = $("#username").val();
+                var obj = new Object();
+                obj.Username = _username;
+
+                var jLogin = JSON.stringify(obj);
+
+
+                $.ajax({
+                    url: "login.asmx/getPassword",
+                    //   url: "http://api.apixu.com/v1/current.json?key=3b6ea19016194bb8905122956171402&q=pretoria",
+                    contentType: "application/json; charset=utf-8",                                       
+                    method: "Get",
+                    dataType: 'json',                    
+                    data: { login: jLogin },                    
+                    beforeSend: function(){
+                        alert("about to send");
+                    },
+                    conplete: function (jqXHR, textStatus) {
+                        //console.log(jqXHR);
+                        //HideLoader();
+                    },
+                    success: function(response)
+                    {
+                        alert("success");            
+                    }
+
+                    //$.ajax({
+
+                    //    url: "login.asmx/getPassword",
+                    //    contentType: "application/json; charset=utf-8",
+                    //    data: { login: JSON.stringify(obj) },
+                    //    method: "Get",
+                    //    dataType: 'json',
+                    //    successs: function (response) {
+                    //        alert("success: check console");
+                    //        console.log(response.d);
+                    //    },
+                    //    error: function (err) {
+                    //        alert("error: check console");
+                    //    }
+                    //});
+                });
+            });
+        })
+        
+    </script>
     <div id="loginForm" style="margin-top: 20%">
         <fieldset style="width:40%; margin:auto;">
             <legend>Login</legend>
@@ -19,12 +69,12 @@
                 <table>
                     <tr>
                         <td>Username:</td>
-                        <td><input type="text" id="username" style="width:190%" /></td>
+                        <td><input type="text" id="username" style="width:190%" required="true"/></td>
                     </tr>
                     <tr></tr><tr></tr><tr></tr>
                     <tr>
                         <td>Password:</td>
-                        <td><input type="password" id="password" style="width:190%" /></td>
+                        <td><input type="password" id="password" style="width:190%" required="true"/></td>
                     </tr>
                 </table>
               

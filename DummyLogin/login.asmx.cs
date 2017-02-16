@@ -63,7 +63,7 @@ namespace DummyLogin
         }
 
         [WebMethod, ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = false)]        
-        public string sendMail()
+        public void sendMail(string password)
         {
             try
             {
@@ -76,16 +76,57 @@ namespace DummyLogin
 
                 mail.From = new MailAddress("julias@delter.co.za");
                 mail.To.Add("phahle.koketso@gmail.com");
-                mail.Subject = "Request to access webservice";
-                mail.Body = "This is for testing SMTP mail from GMAIL";
+                mail.Subject = "Requested Password";
+                mail.Body = "Your password is: " + password;
                 smtpServer.Send(mail);
             }
             catch (Exception ex)
             {
                 var errMess = ex.Message;
-                return errMess;
+             
+            }            
+        }
+
+        [WebMethod, ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public string getPassword(user login)
+        {
+            Response response = new Response();
+
+            var cs = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            SqlConnection con = new SqlConnection(cs);
+            con.Open();
+            SqlCommand cmd = new SqlCommand("spGetPassword", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter parUsername = new SqlParameter();
+            parUsername.ParameterName = "@Username";
+            parUsername.Value = login.Username;
+            cmd.Parameters.Add(parUsername);
+
+            SqlDataReader sdr = cmd.ExecuteReader();
+
+            string pswd = null;
+            while (sdr.Read())
+            {
+                pswd = sdr["Password"].ToString();
             }
-            return "yes";
+            
+            if (pswd != null)
+            {
+                response.Code = 200;
+                response.Message = pswd;
+                response.Success = true;
+
+                sendMail(pswd);
+            }
+            else
+            {
+                response.Code = 400;
+                response.Message = "Please provide valid username";
+                response.Success = false;
+            }
+            
+            return new JavaScriptSerializer().Serialize(response);
         }
     }
 }

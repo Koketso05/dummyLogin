@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="Scripts/jquery-3.1.1.js"></script>
+    <link href="css/main.css" rel="stylesheet" />
+    <script src="Scripts/main.js"></script>
+</head>
+<body>
+   
+    <div id="loader" style="margin-top: 20%">
+        <img src="images/reload.gif" width="100px" height="100px" alt="loader" />
+    </div>
+    <div id="loginForm" style="margin-top: 20%">
+        <fieldset style="width:40%; margin:auto;">
+            <legend>Login</legend>
+            <div id="formControls" style="margin-left: 10%;margin-right: 10%">
+                <table>
+                    <tr>
+                        <td>Username:</td>
+                        <td><input type="text" id="username" style="width:190%" /></td>
+                    </tr>
+                    <tr></tr><tr></tr><tr></tr>
+                    <tr>
+                        <td>Password:</td>
+                        <td><input type="password" id="password" style="width:190%" /></td>
+                    </tr>
+                </table>
+              
+                <br />
+                <input type="button" value="login" id="login" style="width:20%" /><a href="" style="margin-left:20%" id="forgotPswd">forgot password?</a>
+            </div>
+        </fieldset>        
+    </div>
+
+    <div id="isUserValid"></div>
+
+</body>
+</html>

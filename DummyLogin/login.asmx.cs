@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Services;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using System.Web.Script.Services;
 using System.Net.Mail;
-using Newtonsoft.Json.Linq;
 using System.Web.Script.Serialization;
-using MySql.Data.MySqlClient;
 
 namespace DummyLogin
 {
@@ -89,10 +84,9 @@ namespace DummyLogin
         }
 
         [WebMethod, ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public string getPassword(user login)
+        public string getPassword(user _user)
         {
-            Response response = new Response();
-
+            Response response = new Response();            
             var cs = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
             SqlConnection con = new SqlConnection(cs);
             con.Open();
@@ -101,7 +95,7 @@ namespace DummyLogin
 
             SqlParameter parUsername = new SqlParameter();
             parUsername.ParameterName = "@Username";
-            parUsername.Value = login.Username;
+            parUsername.Value = _user.Username;
             cmd.Parameters.Add(parUsername);
 
             SqlDataReader sdr = cmd.ExecuteReader();
@@ -123,12 +117,18 @@ namespace DummyLogin
             else
             {
                 response.Code = 400;
-                response.Message = "Please provide valid username";
+                response.Message = "please provide valid username";
                 response.Success = false;
             }
-            
+
             return new JavaScriptSerializer().Serialize(response);
         }
+
+
+
+
+
+
 
         [WebMethod, ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
         public void connectDB()

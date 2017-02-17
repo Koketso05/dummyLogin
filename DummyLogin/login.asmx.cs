@@ -10,6 +10,7 @@ using System.Web.Script.Services;
 using System.Net.Mail;
 using Newtonsoft.Json.Linq;
 using System.Web.Script.Serialization;
+using MySql.Data.MySqlClient;
 
 namespace DummyLogin
 {
@@ -127,6 +128,13 @@ namespace DummyLogin
             }
             
             return new JavaScriptSerializer().Serialize(response);
+        }
+
+        [WebMethod, ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public void connectDB()
+        {
+            DBConnect connect = new DBConnect();
+            connect.Insert();
         }
     }
 }
